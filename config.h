@@ -29,6 +29,7 @@
 #define BMP085_OSS_3 3
 
 #include "autoconf.h"
+#include <inttypes.h>
 
 /* network controller hardware bug defines */
 #define ENC28J60_REV4_WORKAROUND

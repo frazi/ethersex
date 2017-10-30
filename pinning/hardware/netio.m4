@@ -8,7 +8,7 @@ ifdef(`conf_SD_READER', `dnl
 
 ifdef(`conf_ONEWIRE', `dnl
   /* onewire port range */
-  ONEWIRE_PORT_RANGE(PD6, PD6)
+  ONEWIRE_PORT_RANGE(PA7, PA7)
 ')dnl
 
 ifdef(`conf_STELLA', `dnl
@@ -47,7 +47,7 @@ pin(FS20_RECV, PB3)
 
 ifdef(`conf_RFM12', `dnl
 /* port the rfm12 module CS is attached to */
-pin(SPI_CS_RFM12_0, PD5, OUTPUT)
+pin(SPI_CS_RFM12_0, PB1, OUTPUT)
 RFM12_USE_INT(1)
 RFM12_ASK_SENSE_USE_INT(1)
 ')
@@ -72,18 +72,37 @@ ifdef(`conf_USTREAM', `
   pin(VS1053_DREQ, PB3, INPUT)
 ')
 
-ifdef(`conf_HD44780', `
-  pin(HD44780_RS, PD3)
-  pin(HD44780_RW, PD2)
-  pin(HD44780_EN1, PB0)
-  pin(HD44780_D4, PD4)
-  pin(HD44780_D5, PD5)
-  pin(HD44780_D6, PD6)
-  pin(HD44780_D7, PD7)
-')
-ifdef(`conf_HD44780_BACKLIGHT', `
-  pin(HD44780_BL, PB1, OUTPUT)
-')
+ifdef(`conf_HD44780', 
+	ifelse(value_HD44780_CONNECTION,`HD44780_I2CSUPPORT',`dnl
+	  dnl HD44780_PCF8574x_MAPPING(ADR,RS,RW,EN,DB4,DB5,DB6,DB7,BL)
+	  HD44780_PCF8574x_MAPPING(0x27, 0, 1, 2, 4, 5, 6, 7, 3)',`dnl
+	  dnl ELSE part for direct connection
+	  pin(HD44780_RS, PD2)
+	  pin(HD44780_RW, PD3)
+	  pin(HD44780_EN1, PB0)
+	  pin(HD44780_D4, PD4)
+	  pin(HD44780_D5, PD5)
+	  pin(HD44780_D6, PD6)
+	  pin(HD44780_D7, PD7)
+      ifdef(`conf_HD44780_BACKLIGHT', `
+        pin(HD44780_BL, PB1, OUTPUT)
+      ')
+	')dnl
+)
+
+dnl ifdef(`conf_HD44780', `
+dnl  pin(HD44780_RS, PD2)
+dnl  pin(HD44780_RW, PD3)
+dnl  pin(HD44780_EN1, PB0)
+dnl  pin(HD44780_D4, PD4)
+dnl  pin(HD44780_D5, PD5)
+dnl  pin(HD44780_D6, PD6)
+dnl  pin(HD44780_D7, PD7)
+dnl ')
+dnl ifdef(`conf_HD44780_BACKLIGHT', `
+dnl  pin(HD44780_BL, PB1, OUTPUT)
+dnl ')
+
 ifdef(`conf_DCF77', `dnl
   DCF77_USE_INT(1, PD3)
   pin(DCF1_PON, PA1, OUTPUT)
@@ -94,4 +113,10 @@ ifdef(`conf_TANKLEVEL', `
 ')
 ifdef(`conf_TANKLEVEL_LOCK', `
   pin(TANKLEVEL_LOCK, PA2, INPUT)
+')
+
+ifdef(`conf_HC595', `
+  pin(HC595_DATA, PA0, OUTPUT)
+  pin(HC595_CLOCK, PA1, OUTPUT)
+  pin(HC595_STORE, PA2, OUTPUT)
 ')

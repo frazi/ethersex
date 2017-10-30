@@ -1,0 +1,3 @@
+dep_bool_menu "Web temperature client module" WTC_SUPPORT $TCP_SUPPORT $HD44780_SUPPORT $ONEWIRE_SUPPORT
+	bool "Use large display (4x20)" WTS_LCD_4LINES
+endmenu
